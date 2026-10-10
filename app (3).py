@@ -24,8 +24,7 @@ except ImportError:
 APP_TITLE = "EDU AI"
 DB_PATH = Path("edu_ai_history.db")
 
-# Transparent PNG Avatar for ALI (Little Innocent Boy)
-# Note: You can replace this URL with "ali.png" if you place a local transparent PNG in your app directory
+# Cute Innocent Little Boy Avatar for ALI (Baba)
 ALI_PNG_URL = "https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
 
 st.set_page_config(
@@ -35,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ----------------------------- Styling & PNG Animations ---------------------------------------
+# ----------------------------- Styling & Innocent Animations ---------------------------------------
 st.markdown(f"""
 <style>
 :root {{ --navy:#102b53; --blue:#087cf0; --cyan:#12c7ed; }}
@@ -43,10 +42,10 @@ st.markdown(f"""
 header[data-testid="stHeader"] {{ background: rgba(255,255,255,0); }}
 .block-container {{ padding-top: 1rem; padding-bottom: 2rem; max-width: 1600px; }}
 
-/* Keyframe Animations for ALI */
+/* Keyframe Animations for Innocent Baba ALI */
 @keyframes aliFloat {{
     0% {{ transform: translateY(0px) rotate(0deg); }}
-    50% {{ transform: translateY(-10px) rotate(1deg); }}
+    50% {{ transform: translateY(-8px) rotate(1deg); }}
     100% {{ transform: translateY(0px) rotate(0deg); }}
 }}
 
@@ -89,7 +88,7 @@ header[data-testid="stHeader"] {{ background: rgba(255,255,255,0); }}
 .ali-hero-text {{ max-width: 62%; }}
 .ali-hero h2 {{ color:#0c2d5e; font-size:2.2rem; margin:0 0 8px; }}
 
-/* Animated Transparent PNG ALI */
+/* Animated Innocent Baba ALI Avatar */
 .ali-png-container {{
     text-align: center;
     position: relative;
@@ -97,7 +96,7 @@ header[data-testid="stHeader"] {{ background: rgba(255,255,255,0); }}
 }}
 
 .ali-png-img {{
-    width: 160px;
+    width: 150px;
     height: auto;
     filter: drop-shadow(0px 8px 16px rgba(8, 124, 240, 0.25));
     animation: aliFloat 3.5s ease-in-out infinite;
@@ -142,7 +141,7 @@ header[data-testid="stHeader"] {{ background: rgba(255,255,255,0); }}
 }}
 
 .sidebar-ali img {{
-    width: 110px;
+    width: 100px;
     filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.15));
     animation: aliFloat 4s ease-in-out infinite;
 }}
@@ -189,7 +188,7 @@ def get_api_key():
 def get_model():
     return "gpt-6-luna"
 
-def ask_ai(prompt, system="You are ALI, a friendly, gentle, and innocent little boy assistant. Be clear, accurate, encouraging, and easy to understand."):
+def ask_ai(prompt, system="You are ALI, a very sweet, innocent, and helpful little boy baba assistant. Answer questions with pure childlike enthusiasm, extreme clarity, and encouragement."):
     key = get_api_key()
     if not key or OpenAI is None:
         return demo_response(prompt)
@@ -206,19 +205,19 @@ def ask_ai(prompt, system="You are ALI, a friendly, gentle, and innocent little 
 def demo_response(prompt):
     p = prompt.strip()
     return (
-        "### EDU AI Demo Response\n\n"
+        "### EDU AI Demo Response (Little Baba ALI)\n\n"
         f"You asked: **{p[:500]}**\n\n"
         f"*(Active Model: {get_model()})*\n\n"
-        "This is a local demo response, so no external AI API was called. "
-        "Add `OPENAI_API_KEY` to Streamlit Secrets to enable AI-generated responses.\n\n"
-        "**Suggested next steps**\n"
-        "1. Define the goal and audience.\n"
-        "2. Break the task into clear sections.\n"
-        "3. Review the result for accuracy and adapt it to your requirements."
+        "Yay! This is a local demo response from little Baba ALI! No external AI API was called yet. "
+        "Add `OPENAI_API_KEY` to your Streamlit Secrets to chat with me live!\n\n"
+        "**Baba's friendly steps for success:**\n"
+        "1. Think about your happy goal.\n"
+        "2. Break it down into tiny, easy parts.\n"
+        "3. Ask Baba anytime for help!"
     )
 
 def run_prompt(feature, prompt, system=None):
-    result = ask_ai(prompt, system or f"You are ALI inside EDU AI. Help with the {feature} tool. Use a polished, practical format.")
+    result = ask_ai(prompt, system or f"You are ALI inside EDU AI. Help with the {feature} tool like a sweet little boy assistant.")
     save_history(feature, prompt, result)
     return result
 
@@ -280,7 +279,7 @@ st.markdown("""
     </div>
     <div style="text-align:right">
       <div style="font-size:1.05rem;font-style:italic">Learn · Create · Be Productive</div>
-      <div style="font-size:1.8rem;font-weight:800;color:#ffc247">with ALI 👦</div>
+      <div style="font-size:1.8rem;font-weight:800;color:#ffc247">with Baba ALI 👦</div>
       <div style="border:1px solid #16c7f3;border-radius:12px;padding:8px 14px;display:inline-block;margin-top:5px">
         <span style="color:#28e08b">●</span> Powered by GPT-6 Luna
       </div>
@@ -297,11 +296,11 @@ with st.sidebar:
     page = st.radio("Navigation", pages, label_visibility="collapsed")
     st.divider()
     
-    # Sidebar ALI Branding (Innocent Boy PNG)
-    st.markdown("### 👦 Meet ALI")
+    # Sidebar Little Baba ALI Avatar
+    st.markdown("### 👦 Little Baba ALI")
     st.markdown(f"""
     <div class="sidebar-ali">
-      <img src="{ALI_PNG_URL}" alt="ALI Boy PNG" />
+      <img src="{ALI_PNG_URL}" alt="Baba ALI Avatar" />
     </div>
     """, unsafe_allow_html=True)
     st.info('"Small steps create big success!"')
@@ -315,23 +314,23 @@ with st.sidebar:
 if page == "Home":
     left, right = st.columns([2.15, 1])
     with left:
-        # Animated Hero Section featuring ALI (Innocent Boy PNG)
+        # Animated Hero Section featuring Little Innocent Baba ALI
         st.markdown(f"""
         <div class="ali-hero">
           <div class="ali-hero-text">
             <div style="font-size:0.95rem;color:#16629b;font-weight:700">WELCOME TO</div>
             <h2>EDU <span style="color:#087cf0">AI</span></h2>
             <div style="font-size:1.04rem;line-height:1.5;color:#102b53">
-              Hi! I'm <b>ALI</b>, your friendly little AI assistant. I can help you with assignments, create documents,
-              make PDFs and Excel sheets, answer your questions, and draft emails easily!
+              Hi! I'm <b>ALI</b>, your little innocent study buddy. I love helping you write assignments, 
+              organize documents, create PDFs and spreadsheets, and answer all your curious questions!
             </div>
             <div style="margin-top:16px;background:#087cf0;color:white;display:inline-block;padding:8px 18px;border-radius:24px;font-weight:600">
-              Let's learn and grow together! ✨
+              Let's learn and play together! ✨
             </div>
           </div>
           <div class="ali-png-container">
-            <div class="ali-speech-bubble">Hi there! I'm ALI! 👋</div><br>
-            <img src="{ALI_PNG_URL}" class="ali-png-img" alt="Little Boy ALI" />
+            <div class="ali-speech-bubble">Hi friend! Let's study! 🌟</div><br>
+            <img src="{ALI_PNG_URL}" class="ali-png-img" alt="Little Baba ALI" />
           </div>
         </div>
         """, unsafe_allow_html=True)
@@ -358,18 +357,18 @@ if page == "Home":
         c1.metric("Saved Activities", len(hist))
         c2.metric("Available Tools", "7")
         c3.metric("AI Mode", "API" if key_active else "Demo")
-        c4.metric("Assistant", "ALI 👦")
+        c4.metric("Assistant", "Baba ALI 👦")
     with right:
-        st.markdown("### 💬 Chat with ALI")
+        st.markdown("### 💬 Chat with Baba ALI")
         st.success("Online • Ready to help")
-        st.markdown("**ALI can help you with:**")
+        st.markdown("**Baba ALI can help you with:**")
         st.markdown("- Assignments and study notes\n- Documents and PDFs\n- Excel sheets and data\n- Explanations and brainstorming\n- Email drafts")
-        quick = st.text_area("Ask ALI a quick question", placeholder="e.g. Explain artificial intelligence in simple words", height=120)
-        if st.button("Ask ALI ➤", type="primary", use_container_width=True):
+        quick = st.text_area("Ask Baba ALI a quick question", placeholder="e.g. Explain artificial intelligence in simple words", height=120)
+        if st.button("Ask Baba ALI ➤", type="primary", use_container_width=True):
             if quick.strip():
                 st.session_state["quick_answer"] = run_prompt("Quick Chat", quick)
             else:
-                st.warning("Enter a question first.")
+                st.warning("Please ask me a question first!")
         if st.session_state.get("quick_answer"):
             st.markdown(st.session_state["quick_answer"])
 
@@ -418,7 +417,7 @@ elif page == "PDF Maker":
     page_title("📕", "PDF Maker", "Write content here or generate a draft, then download it as a PDF.")
     pdf_title = st.text_input("PDF title", "My EDU AI Document")
     pdf_content = st.text_area("Content", height=250, placeholder="Paste or write the content you want in your PDF...")
-    if st.button("✨ Improve Content with ALI"):
+    if st.button("✨ Improve Content with Baba ALI"):
         if pdf_content.strip():
             st.session_state["pdf_content"] = run_prompt("PDF Content", f"Improve and organize this content for a clear PDF document. Preserve facts and meaning:\n\n{pdf_content}")
         else:
@@ -432,8 +431,8 @@ elif page == "PDF Maker":
 
 # ----------------------------- Excel Maker ------------------------------------
 elif page == "Excel Maker":
-    page_title("📊", "Excel Maker", "Create a spreadsheet from a simple table or ask ALI to suggest a data structure.")
-    mode = st.radio("Start with", ["Sample table", "Enter CSV data", "Ask ALI for a table"], horizontal=True)
+    page_title("📊", "Excel Maker", "Create a spreadsheet from a simple table or ask Baba ALI to suggest a data structure.")
+    mode = st.radio("Start with", ["Sample table", "Enter CSV data", "Ask Baba ALI for a table"], horizontal=True)
     if mode == "Sample table":
         df = pd.DataFrame({"Student":["Ayesha","Ahmed","Fatima"],"Subject":["AI","Python","Data Science"],"Marks":[88,92,85]})
         st.dataframe(df, use_container_width=True)
@@ -455,7 +454,7 @@ elif page == "Excel Maker":
         if st.session_state.get("excel_idea"):
             st.markdown(st.session_state["excel_idea"])
             st.caption("Copy the table/CSV into the CSV input option to create an Excel file.")
-    if mode != "Ask ALI for a table":
+    if mode != "Ask Baba ALI for a table":
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine="openpyxl") as writer:
             df.to_excel(writer, index=False, sheet_name="EDU AI Data")
@@ -463,32 +462,32 @@ elif page == "Excel Maker":
 
 # ----------------------------- Chat -------------------------------------------
 elif page == "Chat with ALI":
-    page_title("💬", "Chat with ALI", "Ask study questions, brainstorm ideas, or get step-by-step explanations.")
+    page_title("💬", "Chat with Baba ALI", "Ask study questions, brainstorm ideas, or get step-by-step explanations.")
     if "chat_messages" not in st.session_state:
-        st.session_state["chat_messages"] = [{"role":"assistant","content":"Hi! I'm ALI 👋 What would you like to learn or create today?"}]
+        st.session_state["chat_messages"] = [{"role":"assistant","content":"Hi friend! I'm Baba ALI 👋 What fun things shall we learn or create today?"}]
     for msg in st.session_state["chat_messages"]:
         avatar_icon = ALI_PNG_URL if msg["role"] == "assistant" else "🙂"
         with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
-    user_msg = st.chat_input("Type your message to ALI...")
+    user_msg = st.chat_input("Type your message to Baba ALI...")
     if user_msg:
         st.session_state["chat_messages"].append({"role":"user","content":user_msg})
         with st.chat_message("user", avatar="🙂"):
             st.markdown(user_msg)
         with st.chat_message("assistant", avatar=ALI_PNG_URL):
-            with st.spinner("ALI is thinking..."):
-                answer = ask_ai(user_msg, "You are ALI, a friendly and innocent little boy AI assistant. Explain clearly and encourage the user.")
+            with st.spinner("Baba ALI is thinking..."):
+                answer = ask_ai(user_msg, "You are ALI, a very sweet, innocent, and helpful little boy baba assistant. Answer questions with pure childlike enthusiasm, extreme clarity, and encouragement.")
             st.markdown(answer)
         st.session_state["chat_messages"].append({"role":"assistant","content":answer})
         save_history("Chat", user_msg, answer)
 
 # ----------------------------- Email ------------------------------------------
 elif page == "Send Email":
-    page_title("✉️", "Send Email", "Draft an email with ALI. Actual sending requires SMTP settings in Streamlit Secrets.")
+    page_title("✉️", "Send Email", "Draft an email with Baba ALI. Actual sending requires SMTP settings in Streamlit Secrets.")
     recipient = st.text_input("Recipient email address")
     subject = st.text_input("Email subject")
     purpose = st.text_area("What should the email say?", height=120, placeholder="Explain the purpose, tone, and key points.")
-    if st.button("Draft Email with ALI", type="primary"):
+    if st.button("Draft Email with Baba ALI", type="primary"):
         if purpose.strip():
             prompt = f"Draft an email. Recipient context: {recipient or 'not specified'}. Subject: {subject or 'suggest a suitable subject'}. Requirements: {purpose}. Return subject on the first line as 'Subject: ...' followed by the email body."
             st.session_state["email_draft"] = run_prompt("Email Draft", prompt)
@@ -533,7 +532,7 @@ elif page == "History":
     page_title("🕘", "History", "Your recent generated content is stored in a local SQLite database.")
     history = load_history()
     if history.empty:
-        st.info("No activity yet. Create an assignment, document, or chat with ALI to see history here.")
+        st.info("No activity yet. Create an assignment, document, or chat with Baba ALI to see history here.")
     else:
         st.dataframe(history[["created_at","feature","prompt"]], use_container_width=True, hide_index=True)
         selected_id = st.selectbox("View saved result", history["id"].tolist(), format_func=lambda x: f"#{x} — {history.loc[history.id==x, 'feature'].iloc[0]} ({history.loc[history.id==x, 'created_at'].iloc[0]})")
@@ -560,7 +559,7 @@ elif page == "Settings":
     st.warning("Do not commit API keys, SMTP passwords, or personal data to GitHub. EDU AI's SQLite history is local to the running environment and may not persist across cloud restarts.")
     st.markdown("#### About")
     st.write("EDU AI — Your Smart Study & Productivity Assistant")
-    st.write("Assistant: ALI | Built with Python and Streamlit")
+    st.write("Assistant: Little Baba ALI | Built with Python and Streamlit")
     st.write("Designed by Engr. Bilal Mehmood")
     st.caption("AI-generated content can contain mistakes. Verify facts, citations, calculations, and important decisions before use.")
 
