@@ -89,7 +89,7 @@ def ask_ai(prompt, system="You are ALI, a helpful educational and productivity a
         response = client.chat.completions.create(
             model=get_model(),
             messages=[{"role":"system","content":system},{"role":"user","content":prompt}],
-            temperature=0.6,
+            # Temperature omitted because gpt-6-luna only supports default (1) value
         )
         return response.choices[0].message.content.strip()
     except Exception as exc:
