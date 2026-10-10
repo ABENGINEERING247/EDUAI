@@ -77,13 +77,8 @@ def get_api_key():
     return os.getenv("OPENAI_API_KEY", "")
 
 def get_model():
-    # Check session state override first, then fallback to secrets/env, default to gpt-4o-mini
-    if "selected_model" in st.session_state:
-        return st.session_state["selected_model"]
-    try:
-        return st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
-    except Exception:
-        return os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    # Locked exclusively to gpt-6-luna
+    return "gpt-6-luna"
 
 def ask_ai(prompt, system="You are ALI, a helpful educational and productivity assistant. Be accurate, clear, and age-appropriate."):
     key = get_api_key()
@@ -98,7 +93,7 @@ def ask_ai(prompt, system="You are ALI, a helpful educational and productivity a
         )
         return response.choices[0].message.content.strip()
     except Exception as exc:
-        return f"**API response unavailable.** {exc}\n\nYou can continue in Demo Mode or check your `OPENAI_API_KEY` and model configuration in Streamlit secrets."
+        return f"**API response unavailable.** {exc}\n\nYou can continue in Demo Mode or check your `OPENAI_API_KEY` in Streamlit secrets."
 
 def demo_response(prompt):
     p = prompt.strip()
@@ -179,7 +174,7 @@ st.markdown("""
       <div style="font-size:1.05rem;font-style:italic">Learn · Create · Be Productive</div>
       <div style="font-size:1.8rem;font-weight:800;color:#ffc247">with ALI 🤖</div>
       <div style="border:1px solid #16c7f3;border-radius:12px;padding:8px 14px;display:inline-block;margin-top:5px">
-        <span style="color:#28e08b">●</span> OpenAI API ready to configure
+        <span style="color:#28e08b">●</span> Powered by GPT-6 Luna
       </div>
     </div>
   </div>
@@ -193,21 +188,11 @@ with st.sidebar:
     st.caption("Your study partner, powered by ALI")
     page = st.radio("Navigation", pages, label_visibility="collapsed")
     st.divider()
-    
-    # Model Selector in Sidebar
-    st.markdown("### ⚙️ Model Selection")
-    available_models = ["gpt-4o-mini", "gpt-4o", "gpt-6-luna"]
-    current_default = get_model()
-    if current_default not in available_models:
-        available_models.append(current_default)
-    selected_model = st.selectbox("Choose AI Model", available_models, index=available_models.index(current_default) if current_default in available_models else 0)
-    st.session_state["selected_model"] = selected_model
-    
-    st.divider()
     st.markdown("### 🤖 Meet ALI")
     st.info("Small steps create big success!")
     key_active = bool(get_api_key()) and OpenAI is not None
     st.caption("Mode: " + ("OpenAI API" if key_active else "Demo"))
+    st.caption("Active Model: `gpt-6-luna`")
     st.caption("Designed by Engr. Bilal Mehmood")
 
 # ----------------------------- Home -------------------------------------------
@@ -249,7 +234,7 @@ if page == "Home":
         c1.metric("Saved Activities", len(hist))
         c2.metric("Available Tools", "7")
         c3.metric("AI Mode", "API" if key_active else "Demo")
-        c4.metric("Active Model", get_model())
+        c4.metric("Engine", "GPT-6 Luna")
     with right:
         st.markdown("### 💬 Chat with ALI")
         st.success("Online • Ready to help")
@@ -441,10 +426,10 @@ elif page == "Settings":
     page_title("⚙️", "Settings", "Configure API access and review privacy notes.")
     key_active = bool(get_api_key()) and OpenAI is not None
     st.metric("AI provider status", "Connected" if key_active else "Demo mode")
-    st.write(f"**Selected model:** `{get_model()}`")
+    st.write(f"**Selected model:** `gpt-6-luna` (Locked)")
     st.markdown("#### Configure Streamlit Secrets")
-    st.code('OPENAI_API_KEY = "your-api-key"\nOPENAI_MODEL = "gpt-6-luna"', language="toml")
-    st.markdown("For Streamlit Community Cloud, open your app → **Settings → Secrets** and add the values above. Restart/reboot the app if needed.")
+    st.code('OPENAI_API_KEY = "your-api-key"', language="toml")
+    st.markdown("For Streamlit Community Cloud, open your app → **Settings → Secrets** and add your API key. Restart/reboot the app if needed.")
     st.markdown("#### Optional email sending")
     st.code('SMTP_HOST = "smtp.example.com"\nSMTP_PORT = 587\nSMTP_USER = "your-email@example.com"\nSMTP_PASSWORD = "your-app-password"', language="toml")
     st.warning("Do not commit API keys, SMTP passwords, or personal data to GitHub. EDU AI's SQLite history is local to the running environment and may not persist across cloud restarts.")
@@ -455,4 +440,4 @@ elif page == "Settings":
     st.caption("AI-generated content can contain mistakes. Verify facts, citations, calculations, and important decisions before use.")
 
 st.divider()
-st.caption("Built with ❤️ using Python & Streamlit  |  Powered by OpenAI API (optional)  |  Designed by Engr. Bilal Mehmood")
+st.caption("Built with ❤️ using Python & Streamlit  |  Powered by GPT-6 Luna  |  Designed by Engr. Bilal Mehmood")
