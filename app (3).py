@@ -23,25 +23,115 @@ except ImportError:
 
 APP_TITLE = "EDU AI"
 DB_PATH = Path("edu_ai_history.db")
-st.set_page_config(page_title="EDU AI — Study & Productivity Assistant", page_icon="🎓", layout="wide", initial_sidebar_state="expanded")
 
-# ----------------------------- Styling ---------------------------------------
-st.markdown("""
+# ALI Avatar Image URL (Replace with local 'ali.png' if preferred)
+ALI_AVATAR = "https://img.freepik.com/free-vector/cute-boy-character-3d-style_1308-175510.jpg"
+
+st.set_page_config(
+    page_title="EDU AI — Study & Productivity Assistant",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# ----------------------------- Styling & Animations ---------------------------------------
+st.markdown(f"""
 <style>
-:root { --navy:#102b53; --blue:#087cf0; --cyan:#12c7ed; }
-.stApp { background: linear-gradient(135deg,#f5faff 0%,#edf5ff 50%,#ffffff 100%); }
-header[data-testid="stHeader"] { background: rgba(255,255,255,0); }
-.block-container { padding-top: 1rem; padding-bottom: 2rem; max-width: 1600px; }
-.edu-header { background:linear-gradient(105deg,#0b2043,#1e477d); color:white; border-radius:18px; padding:22px 28px; margin-bottom:18px; box-shadow:0 8px 28px #102b5322; }
-.edu-header h1 { margin:0; font-size:2.5rem; letter-spacing:.5px; }
-.edu-header p { margin:5px 0 0; color:#d9efff; }
-.ali-hero { background:linear-gradient(110deg,#e1f5ff,#f5fbff 65%,#d7efff); border:1px solid #b9e2ff; border-radius:18px; padding:24px; min-height:235px; }
-.ali-hero h2 { color:#0c2d5e; font-size:2.0rem; margin:0 0 8px; }
-.ali-hero .big { font-size:3.2rem; font-weight:900; color:#087cf0; line-height:1; }
-.feature-card { border:1px solid #d6e7fa; border-radius:16px; padding:18px; min-height:190px; background:white; box-shadow:0 4px 15px #143a6310; }
-.feature-card h3 { margin:8px 0; font-size:1.15rem; }
-.small-muted { color:#58708c; font-size:.88rem; }
-div[data-testid="stMetric"] { background:white; padding:12px; border:1px solid #d8e8f9; border-radius:12px; }
+:root {{ --navy:#102b53; --blue:#087cf0; --cyan:#12c7ed; }}
+.stApp {{ background: linear-gradient(135deg,#f5faff 0%,#edf5ff 50%,#ffffff 100%); }}
+header[data-testid="stHeader"] {{ background: rgba(255,255,255,0); }}
+.block-container {{ padding-top: 1rem; padding-bottom: 2rem; max-width: 1600px; }}
+
+/* Keyframe Animations */
+@keyframes floatAnim {{
+    0% {{ transform: translateY(0px); }}
+    50% {{ transform: translateY(-8px); }}
+    100% {{ transform: translateY(0px); }}
+}}
+
+@keyframes fadeInSlide {{
+    0% {{ opacity: 0; transform: translateY(20px); }}
+    100% {{ opacity: 1; transform: translateY(0); }}
+}}
+
+@keyframes pulseGlow {{
+    0% {{ box-shadow: 0 0 0 0 rgba(8, 124, 240, 0.4); }}
+    70% {{ box-shadow: 0 0 0 15px rgba(8, 124, 240, 0); }}
+    100% {{ box-shadow: 0 0 0 0 rgba(8, 124, 240, 0); }}
+}}
+
+.edu-header {{ 
+    background: linear-gradient(105deg,#0b2043,#1e477d); 
+    color: white; 
+    border-radius: 18px; 
+    padding: 22px 28px; 
+    margin-bottom: 18px; 
+    box-shadow: 0 8px 28px #102b5322; 
+    animation: fadeInSlide 0.8s ease-out;
+}}
+.edu-header h1 {{ margin:0; font-size:2.5rem; letter-spacing:.5px; }}
+.edu-header p {{ margin:5px 0 0; color:#d9efff; }}
+
+/* ALI Hero Banner & Animated Avatar */
+.ali-hero {{ 
+    background: linear-gradient(110deg,#e1f5ff,#f5fbff 65%,#d7efff); 
+    border: 1px solid #b9e2ff; 
+    border-radius: 20px; 
+    padding: 24px; 
+    min-height: 235px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeInSlide 1s ease-out;
+}}
+.ali-hero-text {{ max-width: 60%; }}
+.ali-hero h2 {{ color:#0c2d5e; font-size:2.2rem; margin:0 0 8px; }}
+
+.ali-avatar-container {{
+    text-align: center;
+    position: relative;
+}}
+.ali-avatar-img {{
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #087cf0;
+    object-fit: cover;
+    animation: floatAnim 3s ease-in-out infinite, pulseGlow 2s infinite;
+    box-shadow: 0 8px 20px rgba(8, 124, 240, 0.3);
+}}
+
+/* Speech Bubble Animation */
+.speech-bubble {{
+    position: relative;
+    background: #087cf0;
+    border-radius: .4em;
+    color: white;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: floatAnim 3s ease-in-out infinite;
+}}
+.speech-bubble:after {{
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #087cf0;
+    border-bottom: 0;
+    margin-left: -10px;
+}}
+
+.feature-card {{ border:1px solid #d6e7fa; border-radius:16px; padding:18px; min-height:190px; background:white; box-shadow:0 4px 15px #143a6310; transition: transform 0.2s ease; }}
+.feature-card:hover {{ transform: translateY(-4px); }}
+.feature-card h3 {{ margin:8px 0; font-size:1.15rem; }}
+.small-muted {{ color:#58708c; font-size:.88rem; }}
+div[data-testid="stMetric"] {{ background:white; padding:12px; border:1px solid #d8e8f9; border-radius:12px; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -77,7 +167,6 @@ def get_api_key():
     return os.getenv("OPENAI_API_KEY", "")
 
 def get_model():
-    # Locked exclusively to gpt-6-luna
     return "gpt-6-luna"
 
 def ask_ai(prompt, system="You are ALI, a helpful educational and productivity assistant. Be accurate, clear, and age-appropriate."):
@@ -89,7 +178,6 @@ def ask_ai(prompt, system="You are ALI, a helpful educational and productivity a
         response = client.chat.completions.create(
             model=get_model(),
             messages=[{"role":"system","content":system},{"role":"user","content":prompt}],
-            # Temperature omitted because gpt-6-luna only supports default (1) value
         )
         return response.choices[0].message.content.strip()
     except Exception as exc:
@@ -188,8 +276,12 @@ with st.sidebar:
     st.caption("Your study partner, powered by ALI")
     page = st.radio("Navigation", pages, label_visibility="collapsed")
     st.divider()
+    
+    # Sidebar ALI Branding
     st.markdown("### 🤖 Meet ALI")
-    st.info("Small steps create big success!")
+    st.image(ALI_AVATAR, width=110, caption="ALI — AI Assistant")
+    st.info('"Small steps create big success!"')
+    
     key_active = bool(get_api_key()) and OpenAI is not None
     st.caption("Mode: " + ("OpenAI API" if key_active else "Demo"))
     st.caption("Active Model: `gpt-6-luna`")
@@ -199,19 +291,27 @@ with st.sidebar:
 if page == "Home":
     left, right = st.columns([2.15, 1])
     with left:
-        st.markdown("""
+        # Animated Hero Section featuring ALI Avatar
+        st.markdown(f"""
         <div class="ali-hero">
-          <div style="font-size:1rem;color:#16629b;font-weight:700">WELCOME TO</div>
-          <h2>EDU <span style="color:#087cf0">AI</span></h2>
-          <div style="font-size:1.04rem;max-width:680px">
-          Hi! I'm <b>ALI</b>, your AI assistant. I can help you with assignments, create documents,
-          make PDFs and Excel sheets, answer questions, and draft emails. Just ask me anything!
+          <div class="ali-hero-text">
+            <div style="font-size:1rem;color:#16629b;font-weight:700">WELCOME TO</div>
+            <h2>EDU <span style="color:#087cf0">AI</span></h2>
+            <div style="font-size:1.04rem;line-height:1.5">
+              Hi! I'm <b>ALI</b>, your AI assistant. I can help you with assignments, create documents,
+              make PDFs and Excel sheets, answer questions, and draft emails.
+            </div>
+            <div style="margin-top:16px;background:#087cf0;color:white;display:inline-block;padding:8px 18px;border-radius:24px;font-weight:600">
+              Learn smarter. Create faster. ✨
+            </div>
           </div>
-          <div style="margin-top:14px;background:#087cf0;color:white;display:inline-block;padding:8px 16px;border-radius:24px">
-          Learn smarter. Create faster. ✨
+          <div class="ali-avatar-container">
+            <div class="speech-bubble">Hi! Let's learn together! 👋</div><br>
+            <img src="{ALI_AVATAR}" class="ali-avatar-img" alt="ALI Avatar" />
           </div>
         </div>
         """, unsafe_allow_html=True)
+        
         st.write("")
         cards = st.columns(4)
         items = [
@@ -343,14 +443,15 @@ elif page == "Chat with ALI":
     if "chat_messages" not in st.session_state:
         st.session_state["chat_messages"] = [{"role":"assistant","content":"Hi! I'm ALI 👋 What would you like to learn or create today?"}]
     for msg in st.session_state["chat_messages"]:
-        with st.chat_message(msg["role"], avatar="🤖" if msg["role"]=="assistant" else "🙂"):
+        avatar_icon = ALI_AVATAR if msg["role"] == "assistant" else "🙂"
+        with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
     user_msg = st.chat_input("Type your message to ALI...")
     if user_msg:
         st.session_state["chat_messages"].append({"role":"user","content":user_msg})
         with st.chat_message("user", avatar="🙂"):
             st.markdown(user_msg)
-        with st.chat_message("assistant", avatar="🤖"):
+        with st.chat_message("assistant", avatar=ALI_AVATAR):
             with st.spinner("ALI is thinking..."):
                 answer = ask_ai(user_msg, "You are ALI, a friendly educational assistant. Explain clearly, use examples when helpful, and state uncertainty.")
             st.markdown(answer)
