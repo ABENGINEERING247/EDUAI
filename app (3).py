@@ -36,7 +36,7 @@ header[data-testid="stHeader"] { background: rgba(255,255,255,0); }
 .edu-header h1 { margin:0; font-size:2.5rem; letter-spacing:.5px; }
 .edu-header p { margin:5px 0 0; color:#d9efff; }
 .ali-hero { background:linear-gradient(110deg,#e1f5ff,#f5fbff 65%,#d7efff); border:1px solid #b9e2ff; border-radius:18px; padding:24px; min-height:235px; }
-.ali-hero h2 { color:#0c2d5e; font-size:2rem; margin:0 0 8px; }
+.ali-hero h2 { color:#0c2d5e; font-size:2.0rem; margin:0 0 8px; }
 .ali-hero .big { font-size:3.2rem; font-weight:900; color:#087cf0; line-height:1; }
 .feature-card { border:1px solid #d6e7fa; border-radius:16px; padding:18px; min-height:190px; background:white; box-shadow:0 4px 15px #143a6310; }
 .feature-card h3 { margin:8px 0; font-size:1.15rem; }
@@ -77,6 +77,9 @@ def get_api_key():
     return os.getenv("OPENAI_API_KEY", "")
 
 def get_model():
+    # Check session state override first, then fallback to secrets/env, default to gpt-4o-mini
+    if "selected_model" in st.session_state:
+        return st.session_state["selected_model"]
     try:
         return st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
     except Exception:
@@ -95,13 +98,14 @@ def ask_ai(prompt, system="You are ALI, a helpful educational and productivity a
         )
         return response.choices[0].message.content.strip()
     except Exception as exc:
-        return f"**API response unavailable.** {exc}\n\nYou can continue in Demo Mode or check your `OPENAI_API_KEY` and `OPENAI_MODEL` Streamlit secrets."
+        return f"**API response unavailable.** {exc}\n\nYou can continue in Demo Mode or check your `OPENAI_API_KEY` and model configuration in Streamlit secrets."
 
 def demo_response(prompt):
     p = prompt.strip()
     return (
         "### EDU AI Demo Response\n\n"
         f"You asked: **{p[:500]}**\n\n"
+        f"*(Active Model: {get_model()})*\n\n"
         "This is a local demo response, so no external AI API was called. "
         "Add `OPENAI_API_KEY` to Streamlit Secrets to enable AI-generated responses.\n\n"
         "**Suggested next steps**\n"
@@ -189,6 +193,17 @@ with st.sidebar:
     st.caption("Your study partner, powered by ALI")
     page = st.radio("Navigation", pages, label_visibility="collapsed")
     st.divider()
+    
+    # Model Selector in Sidebar
+    st.markdown("### ⚙️ Model Selection")
+    available_models = ["gpt-4o-mini", "gpt-4o", "gpt-6-luna"]
+    current_default = get_model()
+    if current_default not in available_models:
+        available_models.append(current_default)
+    selected_model = st.selectbox("Choose AI Model", available_models, index=available_models.index(current_default) if current_default in available_models else 0)
+    st.session_state["selected_model"] = selected_model
+    
+    st.divider()
     st.markdown("### 🤖 Meet ALI")
     st.info("Small steps create big success!")
     key_active = bool(get_api_key()) and OpenAI is not None
@@ -234,7 +249,7 @@ if page == "Home":
         c1.metric("Saved Activities", len(hist))
         c2.metric("Available Tools", "7")
         c3.metric("AI Mode", "API" if key_active else "Demo")
-        c4.metric("Assistant", "ALI 🤖")
+        c4.metric("Active Model", get_model())
     with right:
         st.markdown("### 💬 Chat with ALI")
         st.success("Online • Ready to help")
@@ -428,7 +443,7 @@ elif page == "Settings":
     st.metric("AI provider status", "Connected" if key_active else "Demo mode")
     st.write(f"**Selected model:** `{get_model()}`")
     st.markdown("#### Configure Streamlit Secrets")
-    st.code('OPENAI_API_KEY = "your-api-key"\nOPENAI_MODEL = "gpt-4o-mini"', language="toml")
+    st.code('OPENAI_API_KEY = "your-api-key"\nOPENAI_MODEL = "gpt-6-luna"', language="toml")
     st.markdown("For Streamlit Community Cloud, open your app → **Settings → Secrets** and add the values above. Restart/reboot the app if needed.")
     st.markdown("#### Optional email sending")
     st.code('SMTP_HOST = "smtp.example.com"\nSMTP_PORT = 587\nSMTP_USER = "your-email@example.com"\nSMTP_PASSWORD = "your-app-password"', language="toml")
